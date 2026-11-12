@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function BlogIndexPage() {
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="text-4xl font-bold text-navy-900">
+    <div className="page-enter mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <h1 className="text-3xl font-bold text-navy-900 sm:text-4xl">
         Financial Planning Insights
       </h1>
       <p className="mt-3 max-w-2xl text-slate-600">
@@ -20,22 +20,22 @@ export default function BlogIndexPage() {
         compound growth, and life insurance coverage.
       </p>
 
-      <div className="mt-12 grid gap-8 md:grid-cols-3">
+      <div className="mt-10 grid gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
         {blogPosts.map((post) => (
           <article
             key={post.id}
-            className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+            className="interactive-card flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
           >
             <div className="relative h-52 w-full bg-slate-200">
               <Image
                 src={post.imageUrl}
                 alt={post.title}
                 fill
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover"
               />
             </div>
-            <div className="flex flex-1 flex-col p-6">
+            <div className="flex flex-1 flex-col p-5 sm:p-6">
               <span className="text-xs text-slate-500">
                 {post.publishedDate} · {post.minutesToRead} min read
               </span>
