@@ -7,9 +7,10 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Barone Legacy Group | Retirement & Life Insurance Planning",
+  title: "Barone Legacy Group | Official Website",
   description:
-    "Customized retirement income strategies, wealth preservation, and life insurance solutions for families and business owners.",
+    "Barone Legacy Group provides personalized retirement income, life insurance, and wealth preservation strategies for individuals, families, and business owners.",
+  metadataBase: new URL("https://www.baronelegacygroup.com"),
 };
 
 export default function RootLayout({

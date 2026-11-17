@@ -1,16 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --ink: #0b192c;
-  --moss: #152a46;
-  --cream: #fbf8f1;
-  --clay: #845b11;
-  --muted: #6b7280;
-  --line: #ded7c9;
+  --navy: #142b45;
+  --navy-deep: #0d1b2d;
+  --gold: #c5a46d;
+  --gold-soft: #e8d8af;
+  --ivory: #f7f5f0;
+  --ivory-soft: #f2eee7;
+  --charcoal: #303a46;
+  --charcoal-soft: #566170;
+  --white: #ffffff;
+  --line: rgba(20, 43, 69, 0.12);
+  --shadow-soft: 0 18px 50px rgba(20, 43, 69, 0.08);
 }
 
 * {
@@ -23,16 +28,31 @@ html {
 
 body {
   margin: 0;
-  background: var(--cream);
-  color: var(--ink);
-  font-family: "DM Sans", sans-serif;
+  background: linear-gradient(180deg, #f7f5f0 0%, #f3efe9 100%);
+  color: var(--charcoal);
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+.brand-markup,
+.hero h1,
+.journal-header h1,
+.article-header h1 {
+  font-family: "Playfair Display", serif;
 }
 
 a {
   color: inherit;
   text-decoration: none;
   transition: color 180ms ease;
+}
+
+img {
+  display: block;
 }
 
 .page-enter {
@@ -42,7 +62,8 @@ a {
 .interactive-card {
   transition:
     transform 220ms cubic-bezier(0.2, 0.65, 0.3, 1),
-    box-shadow 220ms ease;
+    box-shadow 220ms ease,
+    border-color 220ms ease;
 }
 
 .interactive-button {
@@ -50,7 +71,8 @@ a {
     transform 160ms ease,
     box-shadow 160ms ease,
     background-color 160ms ease,
-    color 160ms ease;
+    color 160ms ease,
+    border-color 160ms ease;
 }
 
 .interactive-button:active {
@@ -61,12 +83,13 @@ a {
   .interactive-card:hover,
   .interactive-card:focus-within {
     transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(11, 25, 44, 0.1);
+    box-shadow: var(--shadow-soft);
+    border-color: rgba(197, 164, 109, 0.4);
   }
 
   .interactive-button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 8px 18px rgba(11, 25, 44, 0.16);
+    box-shadow: 0 12px 24px rgba(20, 43, 69, 0.15);
   }
 }
 
@@ -84,9 +107,9 @@ a {
 
 .brand-marquee {
   overflow: hidden;
-  border-block: 1px solid rgba(250, 248, 243, 0.15);
-  background: var(--ink);
-  color: var(--cream);
+  border-block: 1px solid rgba(197, 164, 109, 0.18);
+  background: linear-gradient(90deg, var(--navy) 0%, #1a3559 100%);
+  color: var(--ivory);
 }
 
 .brand-marquee__track {
@@ -105,14 +128,14 @@ a {
   gap: 28px;
   padding: 0 24px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .brand-marquee__group span[aria-hidden="true"] {
-  color: var(--clay);
+  color: var(--gold);
   font-size: 16px;
 }
 
@@ -131,10 +154,64 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+.text-slate-600,
+.text-slate-500,
+.text-slate-400,
+.text-slate-300,
+.text-slate-200,
+.text-slate-100,
+.border-slate-200,
+.border-slate-300,
+.bg-slate-50,
+.bg-slate-100,
+.bg-slate-200 {
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.text-slate-600 {
+  color: var(--charcoal-soft) !important;
+}
+
+.text-slate-500 {
+  color: rgba(48, 58, 70, 0.72) !important;
+}
+
+.text-slate-400 {
+  color: rgba(48, 58, 70, 0.7) !important;
+}
+
+.text-slate-300 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.text-slate-200 {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.border-slate-200 {
+  border-color: rgba(20, 43, 69, 0.12) !important;
+}
+
+.border-slate-300 {
+  border-color: rgba(20, 43, 69, 0.2) !important;
+}
+
+.bg-slate-50 {
+  background-color: var(--ivory) !important;
+}
+
+.bg-slate-100 {
+  background-color: var(--ivory-soft) !important;
+}
+
+.bg-slate-200 {
+  background-color: rgba(197, 164, 109, 0.12) !important;
+}
+
 .site-header {
   position: relative;
   z-index: 10;
-  background: var(--cream);
+  background: var(--ivory);
 }
 
 .navbar {
@@ -144,7 +221,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(29, 41, 36, 0.12);
+  border-bottom: 1px solid var(--line);
 }
 
 .brand {
@@ -158,9 +235,9 @@ a {
   height: 38px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--moss);
+  border: 1px solid var(--navy);
   border-radius: 50%;
-  color: var(--moss);
+  color: var(--navy);
   font: 500 24px/1 "Playfair Display", serif;
 }
 
@@ -184,18 +261,18 @@ a {
   align-items: center;
   gap: 38px;
   font-size: 12px;
-  color: #555e57;
+  color: var(--charcoal-soft);
 }
 
 .nav-links a:not(.nav-cta):hover,
 .footer-links a:hover {
-  color: var(--clay);
+  color: var(--gold);
 }
 
 .nav-cta {
   padding: 12px 17px;
-  border: 1px solid rgba(29, 41, 36, 0.4);
-  color: var(--ink);
+  border: 1px solid rgba(20, 43, 69, 0.2);
+  color: var(--navy);
 }
 
 .nav-cta span {
@@ -225,7 +302,7 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--moss);
+  color: var(--gold);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -236,7 +313,7 @@ a {
 .eyebrow > span {
   width: 20px;
   height: 1px;
-  background: var(--clay);
+  background: var(--gold);
 }
 
 h1,

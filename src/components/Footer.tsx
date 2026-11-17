@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-800 bg-navy-900 text-slate-300">
+    <footer className="border-t border-white/15 bg-[#142B45] text-white/90">
       <div className="mx-auto grid max-w-6xl gap-8 px-6 py-10 sm:grid-cols-2 sm:py-12 lg:grid-cols-3">
         <div>
           <Link
@@ -22,7 +22,7 @@ export default function Footer() {
               BARONE <span className="text-gold-500">LEGACY GROUP</span>
             </span>
           </Link>
-          <p className="mt-3 text-sm leading-relaxed text-slate-400">
+          <p className="mt-3 text-sm leading-relaxed text-[#F7F5F0]/80">
             Dedicated to helping families and business owners build lasting
             financial security, tax-advantaged retirement income, and
             customized life insurance protection.
@@ -57,7 +57,7 @@ export default function Footer() {
           <h4 className="text-sm font-semibold uppercase tracking-wider text-white">
             Service Areas
           </h4>
-          <p className="mt-3 text-sm text-slate-400">
+          <p className="mt-3 text-sm text-[#F7F5F0]/80">
             Servicing all of North America.
           </p>
           <a
@@ -70,7 +70,7 @@ export default function Footer() {
           </a>
         </div>
       </div>
-      <div className="border-t border-slate-800 py-6 text-center text-xs text-slate-400">
+      <div className="border-t border-white/15 py-6 text-center text-xs text-[#F7F5F0]/80">
         © 2025 Barone Legacy Group. All rights reserved.
         <p className="mt-2">
           Thank you to our technology partners{" "}
