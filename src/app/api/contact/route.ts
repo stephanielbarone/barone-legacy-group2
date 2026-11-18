@@ -29,9 +29,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const name = typeof payload.name === "string" ? payload.name.trim() : "";
+  const firstName =
+    typeof payload.firstName === "string" ? payload.firstName.trim() : "";
+  const lastName =
+    typeof payload.lastName === "string" ? payload.lastName.trim() : "";
+  const legacyName = typeof payload.name === "string" ? payload.name.trim() : "";
+  const name =
+    firstName && lastName ? `${firstName} ${lastName}` : legacyName;
   const email = typeof payload.email === "string" ? payload.email.trim() : "";
   const phone = typeof payload.phone === "string" ? payload.phone.trim() : "";
+  const submittedSubject =
+    typeof payload.subject === "string" ? payload.subject.trim() : "";
+  const subject = submittedSubject || "Consultation request";
   const message =
     typeof payload.message === "string" ? payload.message.trim() : "";
 
@@ -39,9 +48,14 @@ export async function POST(request: Request) {
     !name ||
     name.length > 150 ||
     /[\r\n]/.test(name) ||
+    (firstName.length > 75 || lastName.length > 75) ||
+    (Boolean(firstName) !== Boolean(lastName)) ||
     !isValidEmail(email) ||
     email.length > 254 ||
     phone.length > 50 ||
+    !subject ||
+    subject.length > 200 ||
+    /[\r\n]/.test(subject) ||
     !message ||
     message.length > 5000
   ) {
@@ -88,11 +102,12 @@ export async function POST(request: Request) {
       from: { name: "Barone Legacy Group", address: from },
       to: recipient,
       replyTo: email,
-      subject: "New consultation request",
+      subject: `Website contact: ${subject}`,
       text: [
         `Name: ${name}`,
         `Email: ${email}`,
         `Phone: ${phone || "Not provided"}`,
+        `Subject: ${subject}`,
         "",
         "Message:",
         message,

@@ -44,12 +44,9 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <a
-                href="mailto:stephanie@baronelegacygroup.com"
-                className="hover:text-gold-500"
-              >
+              <Link href="/contact" className="hover:text-gold-500">
                 Contact Us
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

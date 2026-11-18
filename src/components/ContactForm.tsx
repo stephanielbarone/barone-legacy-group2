@@ -65,62 +65,120 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-8 grid gap-4 sm:grid-cols-2"
+      className="grid gap-5 sm:grid-cols-2"
       aria-describedby="contact-form-status"
     >
-      <label className="sr-only" htmlFor="contact-name">Full Name</label>
-      <input
-        id="contact-name"
-        type="text"
-        name="name"
-        autoComplete="name"
-        maxLength={150}
-        required
-        placeholder="Full Name"
-        className="rounded border border-slate-700 bg-navy-800 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-gold-500 focus:outline-none"
-      />
-      <label className="sr-only" htmlFor="contact-email">Email Address</label>
-      <input
-        id="contact-email"
-        type="email"
-        name="email"
-        autoComplete="email"
-        maxLength={254}
-        required
-        placeholder="Email Address"
-        className="rounded border border-slate-700 bg-navy-800 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-gold-500 focus:outline-none"
-      />
-      <label className="sr-only" htmlFor="contact-phone">Phone Number (Optional)</label>
-      <input
-        id="contact-phone"
-        type="tel"
-        name="phone"
-        autoComplete="tel"
-        maxLength={50}
-        placeholder="Phone Number (Optional)"
-        className="rounded border border-slate-700 bg-navy-800 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-gold-500 focus:outline-none sm:col-span-2"
-      />
-      <label className="sr-only" htmlFor="contact-message">How can we help you?</label>
-      <textarea
-        id="contact-message"
-        name="message"
-        rows={4}
-        maxLength={5000}
-        required
-        placeholder="How can we help you?"
-        className="rounded border border-slate-700 bg-navy-800 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-gold-500 focus:outline-none sm:col-span-2"
-      />
+      <div>
+        <label
+          className="mb-2 block text-sm font-semibold text-[#142B45]"
+          htmlFor="contact-first-name"
+        >
+          First Name
+        </label>
+        <input
+          id="contact-first-name"
+          type="text"
+          name="firstName"
+          autoComplete="given-name"
+          maxLength={75}
+          required
+          className="w-full rounded-lg border border-[#D8D2C8] bg-white px-4 py-3 text-sm text-[#142B45] placeholder-[#7A8490] focus:border-[#A98A55] focus:outline-none focus:ring-2 focus:ring-[#C5A46D]/25"
+        />
+      </div>
+      <div>
+        <label
+          className="mb-2 block text-sm font-semibold text-[#142B45]"
+          htmlFor="contact-last-name"
+        >
+          Last Name
+        </label>
+        <input
+          id="contact-last-name"
+          type="text"
+          name="lastName"
+          autoComplete="family-name"
+          maxLength={75}
+          required
+          className="w-full rounded-lg border border-[#D8D2C8] bg-white px-4 py-3 text-sm text-[#142B45] placeholder-[#7A8490] focus:border-[#A98A55] focus:outline-none focus:ring-2 focus:ring-[#C5A46D]/25"
+        />
+      </div>
+      <div>
+        <label
+          className="mb-2 block text-sm font-semibold text-[#142B45]"
+          htmlFor="contact-email"
+        >
+          Email Address
+        </label>
+        <input
+          id="contact-email"
+          type="email"
+          name="email"
+          autoComplete="email"
+          maxLength={254}
+          required
+          className="w-full rounded-lg border border-[#D8D2C8] bg-white px-4 py-3 text-sm text-[#142B45] placeholder-[#7A8490] focus:border-[#A98A55] focus:outline-none focus:ring-2 focus:ring-[#C5A46D]/25"
+        />
+      </div>
+      <div>
+        <label
+          className="mb-2 block text-sm font-semibold text-[#142B45]"
+          htmlFor="contact-phone"
+        >
+          Phone Number
+          <span className="ml-1 font-normal text-[#566170]">(Optional)</span>
+        </label>
+        <input
+          id="contact-phone"
+          type="tel"
+          name="phone"
+          autoComplete="tel"
+          maxLength={50}
+          className="w-full rounded-lg border border-[#D8D2C8] bg-white px-4 py-3 text-sm text-[#142B45] placeholder-[#7A8490] focus:border-[#A98A55] focus:outline-none focus:ring-2 focus:ring-[#C5A46D]/25"
+        />
+      </div>
+      <div className="sm:col-span-2">
+        <label
+          className="mb-2 block text-sm font-semibold text-[#142B45]"
+          htmlFor="contact-subject"
+        >
+          Subject
+        </label>
+        <input
+          id="contact-subject"
+          type="text"
+          name="subject"
+          maxLength={200}
+          required
+          className="w-full rounded-lg border border-[#D8D2C8] bg-white px-4 py-3 text-sm text-[#142B45] placeholder-[#7A8490] focus:border-[#A98A55] focus:outline-none focus:ring-2 focus:ring-[#C5A46D]/25"
+        />
+      </div>
+      <div className="sm:col-span-2">
+        <label
+          className="mb-2 block text-sm font-semibold text-[#142B45]"
+          htmlFor="contact-message"
+        >
+          Message
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows={4}
+          maxLength={5000}
+          required
+          className="w-full resize-y rounded-lg border border-[#D8D2C8] bg-white px-4 py-3 text-sm text-[#142B45] placeholder-[#7A8490] focus:border-[#A98A55] focus:outline-none focus:ring-2 focus:ring-[#C5A46D]/25"
+        />
+      </div>
       <button
         type="submit"
         disabled={status === "sending"}
-        className="rounded bg-gold-500 px-6 py-3 font-semibold text-navy-900 transition hover:bg-gold-600 hover:text-white disabled:cursor-wait disabled:opacity-70 sm:col-span-2"
+        className="interactive-button rounded-full bg-[#C5A46D] px-6 py-4 font-semibold text-[#142B45] transition hover:bg-[#d7b980] disabled:cursor-wait disabled:opacity-70 sm:col-span-2"
       >
-        {status === "sending" ? "Sending..." : "Request Consultation"}
+        {status === "sending" ? "Sending..." : "Submit Message"}
       </button>
       <p
         id="contact-form-status"
         className={`text-sm sm:col-span-2 ${
-          status === "error" ? "text-red-300" : "text-slate-300"
+          status === "error" ? "text-red-700" : "text-[#566170]"
         }`}
         role={status === "error" ? "alert" : "status"}
         aria-live="polite"

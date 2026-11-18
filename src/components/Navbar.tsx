@@ -57,6 +57,9 @@ export default function Navbar() {
           <Link href="/faculty" className="transition hover:text-gold-500" onClick={closeMenu}>
             Faculty
           </Link>
+          <Link href="/contact" className="transition hover:text-gold-500" onClick={closeMenu}>
+            Contact
+          </Link>
           <Link href="/blog" className="transition hover:text-gold-500" onClick={closeMenu}>
             Insights &amp; Blog
           </Link>
