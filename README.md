@@ -1,12 +1,22 @@
 # Barone Legacy Group
 
-## Consultation form setup
+## Contact form email setup
 
-The consultation form sends submissions through the self-hosted `/api/contact`
-route using SMTP. Copy `.env.example` to `.env.local` and set `SMTP_HOST`,
-`SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, and `SMTP_FROM_EMAIL` using the
-credentials and verified sender address from your mail provider. The form
-delivers requests to `CONTACT_EMAIL`.
+The contact form sends submissions through the server-side `/api/contact`
+route using Nodemailer and Google Workspace SMTP at `smtp.gmail.com:465` with
+TLS. Copy `.env.example` to `.env.local` and set:
 
-Configure the same environment variables in the production hosting environment.
-Keep `.env.local` and all SMTP credentials out of version control.
+- `SMTP_USER`: the Google Workspace mailbox used to authenticate
+- `SMTP_PASSWORD`: that account's Google Workspace app password
+- `SMTP_FROM`: the authorized sender address
+- `CONTACT_TO`: the mailbox that receives inquiries
+
+For this site, the intended mailbox is `Stephanie@baronelegacygroup.com`.
+Google Workspace may require 2-Step Verification and an app password; a normal
+account password may not work. Ensure `SMTP_FROM` is authorized for the
+authenticated mailbox.
+
+Configure these variables in the production hosting environment as well.
+Credentials are used only by the server API route; never add them to
+`NEXT_PUBLIC_*` variables or commit real secrets. The API only reports success
+after Nodemailer accepts the email for sending.

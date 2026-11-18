@@ -45,12 +45,12 @@ export default function ContactForm() {
         throw new Error(message);
       }
 
-      const message =
-        isContactResponse(result) && typeof result.message === "string"
-          ? result.message
-          : "Your request was sent.";
+      if (!isContactResponse(result) || typeof result.message !== "string") {
+        throw new Error("Unable to confirm your message was sent.");
+      }
+
       setStatus("success");
-      setStatusMessage(message);
+      setStatusMessage(result.message);
       form.reset();
     } catch (error) {
       setStatus("error");
@@ -68,6 +68,19 @@ export default function ContactForm() {
       className="grid gap-5 sm:grid-cols-2"
       aria-describedby="contact-form-status"
     >
+      <div
+        className="absolute -left-[9999px] h-px w-px overflow-hidden"
+        aria-hidden="true"
+      >
+        <label htmlFor="contact-website">Leave this field empty</label>
+        <input
+          id="contact-website"
+          type="text"
+          name="website"
+          autoComplete="off"
+          tabIndex={-1}
+        />
+      </div>
       <div>
         <label
           className="mb-2 block text-sm font-semibold text-[#142B45]"

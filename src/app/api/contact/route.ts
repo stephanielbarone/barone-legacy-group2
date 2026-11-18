@@ -8,7 +8,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function isValidEmail(value: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  return (
+    value.length <= 254 &&
+    /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value)
+  );
 }
 
 export async function POST(request: Request) {
@@ -29,35 +32,54 @@ export async function POST(request: Request) {
     );
   }
 
+  if (
+    typeof payload.firstName !== "string" ||
+    typeof payload.lastName !== "string" ||
+    typeof payload.email !== "string" ||
+    typeof payload.phone !== "string" ||
+    typeof payload.subject !== "string" ||
+    typeof payload.message !== "string" ||
+    typeof payload.website !== "string"
+  ) {
+    return NextResponse.json(
+      { error: "Check the form fields and try again." },
+      { status: 400 },
+    );
+  }
+
   const firstName =
-    typeof payload.firstName === "string" ? payload.firstName.trim() : "";
-  const lastName =
-    typeof payload.lastName === "string" ? payload.lastName.trim() : "";
-  const legacyName = typeof payload.name === "string" ? payload.name.trim() : "";
-  const name =
-    firstName && lastName ? `${firstName} ${lastName}` : legacyName;
-  const email = typeof payload.email === "string" ? payload.email.trim() : "";
-  const phone = typeof payload.phone === "string" ? payload.phone.trim() : "";
-  const submittedSubject =
-    typeof payload.subject === "string" ? payload.subject.trim() : "";
-  const subject = submittedSubject || "Consultation request";
-  const message =
-    typeof payload.message === "string" ? payload.message.trim() : "";
+    payload.firstName.trim();
+  const lastName = payload.lastName.trim();
+  const name = `${firstName} ${lastName}`.trim();
+  const email = payload.email.trim();
+  const phone = payload.phone.trim();
+  const subject = payload.subject.trim();
+  const message = payload.message.trim();
+  const website = payload.website;
+
+  if (website) {
+    return NextResponse.json(
+      { error: "Unable to submit this request." },
+      { status: 400 },
+    );
+  }
 
   if (
-    !name ||
+    !firstName ||
+    !lastName ||
+    firstName.length > 75 ||
+    lastName.length > 75 ||
     name.length > 150 ||
-    /[\r\n]/.test(name) ||
-    (firstName.length > 75 || lastName.length > 75) ||
-    (Boolean(firstName) !== Boolean(lastName)) ||
+    /[\u0000-\u001f\u007f]/.test(name) ||
     !isValidEmail(email) ||
-    email.length > 254 ||
     phone.length > 50 ||
+    (phone !== "" && !/^[0-9+().\-\s]*$/.test(phone)) ||
     !subject ||
     subject.length > 200 ||
-    /[\r\n]/.test(subject) ||
+    /[\u0000-\u001f\u007f]/.test(subject) ||
     !message ||
-    message.length > 5000
+    message.length > 5000 ||
+    /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(message)
   ) {
     return NextResponse.json(
       { error: "Check the form fields and try again." },
@@ -66,24 +88,36 @@ export async function POST(request: Request) {
   }
 
   const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT);
+  const portValue = process.env.SMTP_PORT;
+  const port = Number(portValue);
   const user = process.env.SMTP_USER;
   const password = process.env.SMTP_PASSWORD;
-  const from = process.env.SMTP_FROM_EMAIL;
-  const recipient = process.env.CONTACT_EMAIL;
+  const from = process.env.SMTP_FROM;
+  const recipient = process.env.CONTACT_TO;
 
   if (
-    !host ||
-    !Number.isInteger(port) ||
-    port < 1 ||
-    port > 65535 ||
+    host !== "smtp.gmail.com" ||
+    portValue !== "465" ||
+    port !== 465 ||
     !user ||
+    !isValidEmail(user) ||
     !password ||
     !from ||
     !isValidEmail(from) ||
     !recipient ||
     !isValidEmail(recipient)
   ) {
+    const invalidConfiguration = [
+      ...(host !== "smtp.gmail.com" ? ["SMTP_HOST"] : []),
+      ...(portValue !== "465" || port !== 465 ? ["SMTP_PORT"] : []),
+      ...(!user || !isValidEmail(user) ? ["SMTP_USER"] : []),
+      ...(!password ? ["SMTP_PASSWORD"] : []),
+      ...(!from || !isValidEmail(from) ? ["SMTP_FROM"] : []),
+      ...(!recipient || !isValidEmail(recipient) ? ["CONTACT_TO"] : []),
+    ];
+    console.error("Contact form SMTP configuration is incomplete or invalid.", {
+      variables: invalidConfiguration,
+    });
     return NextResponse.json(
       { error: "Consultation requests are temporarily unavailable." },
       { status: 503 },
@@ -93,12 +127,12 @@ export async function POST(request: Request) {
   const transporter = nodemailer.createTransport({
     host,
     port,
-    secure: port === 465,
+    secure: true,
     auth: { user, pass: password },
   });
 
   try {
-    await transporter.sendMail({
+    const delivery = await transporter.sendMail({
       from: { name: "Barone Legacy Group", address: from },
       to: recipient,
       replyTo: email,
@@ -113,10 +147,31 @@ export async function POST(request: Request) {
         message,
       ].join("\n"),
     });
+
+    if (delivery.accepted.length === 0 || delivery.rejected.length > 0) {
+      throw new Error("SMTP server did not accept the recipient.");
+    }
   } catch (error) {
     console.error(
       "Contact form email delivery failed:",
-      error instanceof Error ? error.message : "Unknown SMTP error",
+      error instanceof Error
+        ? {
+            name: error.name,
+            code:
+              "code" in error && typeof error.code === "string"
+                ? error.code
+                : undefined,
+            responseCode:
+              "responseCode" in error &&
+              typeof error.responseCode === "number"
+                ? error.responseCode
+                : undefined,
+            command:
+              "command" in error && typeof error.command === "string"
+                ? error.command
+                : undefined,
+          }
+        : { name: "UnknownSMTPError" },
     );
     return NextResponse.json(
       { error: "Unable to send your request right now. Please try again." },
